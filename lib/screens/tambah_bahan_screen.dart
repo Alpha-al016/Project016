@@ -20,6 +20,7 @@ class _TambahBahanScreenState extends State<TambahBahanScreen> {
 
   final List<String> _listJenis = [
     'Makanan Kemasan (Input Manual)',
+    'Minuman Kemasan (Input Manual)',
     'Sayuran (Otomatis 5 Hari)',
     'Buah (Otomatis 7 Hari)',
     'Daging / Ikan (Otomatis 3 Hari)',
@@ -73,7 +74,6 @@ class _TambahBahanScreenState extends State<TambahBahanScreen> {
       masaSimpan = 3;
       waktuHitungSistem = waktuHitungSistem.add(const Duration(days: 3));
     }
-
     String tanggalMasuk =
         "${DateTime.now().year}-${DateTime.now().month.toString().padLeft(2, '0')}-${DateTime.now().day.toString().padLeft(2, '0')}";
 
@@ -156,7 +156,8 @@ class _TambahBahanScreenState extends State<TambahBahanScreen> {
 
                 const SizedBox(height: 16),
 
-                if (_selectedJenis == 'Makanan Kemasan (Input Manual)')
+                if (_selectedJenis == 'Makanan Kemasan (Input Manual)' ||
+                    _selectedJenis == 'Minuman Kemasan (Input Manual)')
                   TextFormField(
                     controller: _tanggalController,
                     readOnly: true,
