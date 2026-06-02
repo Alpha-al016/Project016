@@ -77,7 +77,7 @@ class _TambahBahanScreenState extends State<TambahBahanScreen> {
 
     try {
       var response = await http.post(
-        Uri.parse("http://10.0.2.2/api_kulkas/insert.php"),
+        Uri.parse("http://localhost/api_kulkas/create.php"),
         body: {
           "nama": _namaController.text,
           "tanggal_masuk": tanggalMasuk,
