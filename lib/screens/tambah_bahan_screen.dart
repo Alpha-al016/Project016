@@ -59,8 +59,10 @@ class _TambahBahanScreenState extends State<TambahBahanScreen> {
 
     if (_selectedJenis == 'Makanan Kemasan (Input Manual)') {
       waktuHitungSistem = _finalKadaluarsa!;
-      masaSimpan =
-          _finalKadaluarsa!.difference(DateTime.now()).inDays;
+      masaSimpan = _finalKadaluarsa!.difference(DateTime.now()).inDays;
+    } else if (_selectedJenis == 'Minuman Kemasan (Input Manual)') {
+      waktuHitungSistem = _finalKadaluarsa!;
+      masaSimpan = _finalKadaluarsa!.difference(DateTime.now()).inDays;
     } else if (_selectedJenis == 'Sayuran (Otomatis 5 Hari)') {
       masaSimpan = 5;
       waktuHitungSistem = waktuHitungSistem.add(const Duration(days: 5));
@@ -88,9 +90,7 @@ class _TambahBahanScreenState extends State<TambahBahanScreen> {
       if (response.statusCode == 200) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(
-              'Berhasil! ${_namaController.text} disimpan',
-            ),
+            content: Text('Berhasil! ${_namaController.text} disimpan'),
             backgroundColor: Colors.green,
           ),
         );
@@ -101,10 +101,7 @@ class _TambahBahanScreenState extends State<TambahBahanScreen> {
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text("Error: $e"),
-          backgroundColor: Colors.red,
-        ),
+        SnackBar(content: Text("Error: $e"), backgroundColor: Colors.red),
       );
     }
   }
@@ -125,9 +122,7 @@ class _TambahBahanScreenState extends State<TambahBahanScreen> {
               children: [
                 TextFormField(
                   controller: _namaController,
-                  decoration: const InputDecoration(
-                    labelText: 'Nama Bahan',
-                  ),
+                  decoration: const InputDecoration(labelText: 'Nama Bahan'),
                   validator: (value) =>
                       value!.isEmpty ? 'Tidak boleh kosong' : null,
                 ),
@@ -137,9 +132,7 @@ class _TambahBahanScreenState extends State<TambahBahanScreen> {
                 TextFormField(
                   controller: _jumlahController,
                   keyboardType: TextInputType.number,
-                  decoration: const InputDecoration(
-                    labelText: 'Jumlah',
-                  ),
+                  decoration: const InputDecoration(labelText: 'Jumlah'),
                   validator: (value) =>
                       value!.isEmpty ? 'Tidak boleh kosong' : null,
                 ),
@@ -147,13 +140,10 @@ class _TambahBahanScreenState extends State<TambahBahanScreen> {
                 const SizedBox(height: 16),
 
                 DropdownButtonFormField<String>(
-                  value: _selectedJenis,
+                  initialValue: _selectedJenis,
                   hint: const Text("Pilih jenis"),
                   items: _listJenis.map((e) {
-                    return DropdownMenuItem(
-                      value: e,
-                      child: Text(e),
-                    );
+                    return DropdownMenuItem(value: e, child: Text(e));
                   }).toList(),
                   onChanged: (val) {
                     setState(() {
@@ -161,14 +151,12 @@ class _TambahBahanScreenState extends State<TambahBahanScreen> {
                       _tanggalController.clear();
                     });
                   },
-                  validator: (value) =>
-                      value == null ? 'Pilih jenis' : null,
+                  validator: (value) => value == null ? 'Pilih jenis' : null,
                 ),
 
                 const SizedBox(height: 16),
 
-                if (_selectedJenis ==
-                    'Makanan Kemasan (Input Manual)')
+                if (_selectedJenis == 'Makanan Kemasan (Input Manual)')
                   TextFormField(
                     controller: _tanggalController,
                     readOnly: true,
@@ -186,7 +174,7 @@ class _TambahBahanScreenState extends State<TambahBahanScreen> {
                 ElevatedButton(
                   onPressed: _simpanData,
                   child: const Text("Simpan"),
-                )
+                ),
               ],
             ),
           ),
