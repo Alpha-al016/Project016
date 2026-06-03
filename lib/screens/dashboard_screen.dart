@@ -30,11 +30,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
       future: futureBahan,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator()); // loading spinner saat data sedang dimuat
         }
 
         if (!snapshot.hasData || snapshot.data!.isEmpty) {
-          return const Center(child: Text("Tidak ada data"));
+          return const Center(child: Text("Tidak ada data")); // pesan jika data kosong
         }
 
         final data = snapshot.data!;
@@ -42,7 +42,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         return ListView.builder(
           itemCount: data.length,
           itemBuilder: (context, index) {
-            final bahan = data[index];
+            final bahan = data[index]; // ambil data bahan dari list berdasarkan index
 
             return Container(
               margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 5),
