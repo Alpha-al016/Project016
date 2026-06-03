@@ -82,7 +82,7 @@ class _KategoriScreenState extends State<KategoriScreen> {
             itemBuilder: (context, index) {
               final item = daftarKategori[index];
               return ListTile(
-                leading: const Icon(Icons.check_circle, Colors.green),
+                leading: const Icon(Icons.check_circle, color: Colors.green),
                 title: Text(item['nama_kategori'] ?? 'Tanpa Nama'),
                 subtitle: Text('ID: ${item['id']}'),
               );
