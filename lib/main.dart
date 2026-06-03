@@ -1,20 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart'; // 1. Tambahkan import untuk dotenv
+import 'package:supabase_flutter/supabase_flutter.dart'; // 2. Tambahkan import untuk Supabase
 import 'screens/dashboard_screen.dart';
 import 'screens/tambah_bahan_screen.dart';
 import 'screens/kategori_screen.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
-Future<void> main() async {
-  // 3. Tambahkan binding initialization
+void main() async {
+  // Wajib ditambahkan jika ada kode async-await sebelum runApp
   WidgetsFlutterBinding.ensureInitialized();
 
-  // 4. Inisialisasi proyek Supabase kamu
-  await Supabase.initialize(
-    url:
-        'https://mgbxrgbztdwafphjulcd.supabase.co', // Ganti dengan URL dari Dashboard Supabase
-    anonKey:
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1nYnhyZ2J6dGR3YWZwaGp1bGNkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA0NzU4NjMsImV4cCI6MjA5NjA1MTg2M30.Y_F3vOubaNJ3OplyJGi4Rj7cf3-mzSqzporHeFR0rTg', // Ganti dengan Anon Key dari Dashboard Supabase
-  );
+  try {
+    // 3. Muat file .env yang ada di folder root proyek
+    await dotenv.load(fileName: ".env");
+
+    // 4. Inisialisasi Supabase menggunakan kredensial dari file .env
+    await Supabase.initialize(
+      url: dotenv.env['SUPABASE_URL'] ?? '',
+      anonKey: dotenv.env['SUPABASE_ANON_KEY'] ?? '',
+    );
+  } catch (e) {
+    // Jika file .env belum dibuat oleh temanmu, aplikasi tidak akan langsung crash,
+    // melainkan memberikan log error di console.
+    debugPrint("Error inisialisasi .env / Supabase: $e");
+  }
 
   runApp(const MyApp());
 }
@@ -24,10 +32,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
+      // Tambahkan const di sini untuk efisiensi jika memungkinkan
       debugShowCheckedModeBanner: false,
       title: 'Koolkasku',
-      home: const MainPage(),
+      home: MainPage(),
     );
   }
 }
@@ -67,10 +76,14 @@ class MainPage extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           FloatingActionButton(
+            heroTag:
+                'btn_tambah', // Ditambahkan heroTag agar tidak error jika ada 2 FAB dalam 1 screen
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => TambahBahanScreen()),
+                MaterialPageRoute(
+                  builder: (context) => const TambahBahanScreen(),
+                ),
               ).then((result) {
                 if (result == true) {}
               });
@@ -80,10 +93,12 @@ class MainPage extends StatelessWidget {
           ),
           const SizedBox(width: 20),
           FloatingActionButton(
+            heroTag:
+                'btn_kategori', // Ditambahkan heroTag agar tidak error jika ada 2 FAB dalam 1 screen
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => KategoriScreen()),
+                MaterialPageRoute(builder: (context) => const KategoriScreen()),
               ).then((result) {
                 if (result == true) {}
               });
